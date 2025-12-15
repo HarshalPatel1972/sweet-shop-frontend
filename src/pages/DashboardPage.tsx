@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import apiClient from '../lib/api';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import apiClient from "../lib/api";
 
 interface Sweet {
   id: number;
@@ -15,10 +15,10 @@ interface Sweet {
 export function DashboardPage() {
   const [sweets, setSweets] = useState<Sweet[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchName, setSearchName] = useState('');
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  
+  const [searchName, setSearchName] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -34,10 +34,10 @@ export function DashboardPage() {
       if (minPrice) params.minPrice = minPrice;
       if (maxPrice) params.maxPrice = maxPrice;
 
-      const response = await apiClient.get('/sweets/search', { params });
+      const response = await apiClient.get("/sweets/search", { params });
       setSweets(response.data);
     } catch (error) {
-      console.error('Failed to fetch sweets:', error);
+      console.error("Failed to fetch sweets:", error);
     } finally {
       setLoading(false);
     }
@@ -50,7 +50,7 @@ export function DashboardPage() {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -61,11 +61,14 @@ export function DashboardPage() {
           <h1 className="text-3xl font-bold text-gray-900">🍰 Sweet Shop</h1>
           <div className="flex items-center space-x-4">
             <span className="text-sm text-gray-600">
-              {user?.email} <span className="font-semibold text-purple-600">({user?.role})</span>
+              {user?.email}{" "}
+              <span className="font-semibold text-purple-600">
+                ({user?.role})
+              </span>
             </span>
-            {user?.role === 'Admin' && (
+            {user?.role === "Admin" && (
               <button
-                onClick={() => navigate('/admin')}
+                onClick={() => navigate("/admin")}
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 Admin Panel
@@ -83,11 +86,16 @@ export function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="bg-white rounded-lg shadow-sm p-6 mb-8">
+        <form
+          onSubmit={handleSearch}
+          className="bg-white rounded-lg shadow-sm p-6 mb-8"
+        >
           <h2 className="text-lg font-semibold mb-4">Search & Filter Sweets</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Sweet Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Sweet Name
+              </label>
               <input
                 type="text"
                 value={searchName}
@@ -97,7 +105,9 @@ export function DashboardPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Min Price</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Min Price
+              </label>
               <input
                 type="number"
                 value={minPrice}
@@ -108,7 +118,9 @@ export function DashboardPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Max Price</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Max Price
+              </label>
               <input
                 type="number"
                 value={maxPrice}
@@ -141,26 +153,39 @@ export function DashboardPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sweets.map((sweet) => (
-              <div key={sweet.id} className="bg-white rounded-lg shadow-sm hover:shadow-md transition overflow-hidden cursor-pointer"
-                onClick={() => navigate(`/sweet/${sweet.id}`)}>
+              <div
+                key={sweet.id}
+                className="bg-white rounded-lg shadow-sm hover:shadow-md transition overflow-hidden cursor-pointer"
+                onClick={() => navigate(`/sweet/${sweet.id}`)}
+              >
                 <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{sweet.name}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{sweet.description}</p>
-                  
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {sweet.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4">
+                    {sweet.description}
+                  </p>
+
                   <div className="flex justify-between items-center mb-4">
                     <div>
-                      <p className="text-2xl font-bold text-purple-600">${sweet.price.toFixed(2)}</p>
+                      <p className="text-2xl font-bold text-purple-600">
+                        ${sweet.price.toFixed(2)}
+                      </p>
                       <p className="text-sm text-gray-500">per unit</p>
                     </div>
                     <div className="text-right">
-                      <p className={`text-2xl font-bold ${sweet.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      <p
+                        className={`text-2xl font-bold ${
+                          sweet.quantity > 0 ? "text-green-600" : "text-red-600"
+                        }`}
+                      >
                         {sweet.quantity}
                       </p>
                       <p className="text-sm text-gray-500">in stock</p>
                     </div>
                   </div>
 
-                  {user?.role === 'Admin' && (
+                  {user?.role === "Admin" && (
                     <div className="flex space-x-2 mt-4">
                       <button
                         onClick={(e) => {

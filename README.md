@@ -72,6 +72,7 @@ src/
 ## API Integration
 
 The frontend communicates with the backend API at:
+
 - Login: `POST /api/auth/login`
 - Register: `POST /api/auth/register`
 - Sweets: `GET /api/sweets/search`

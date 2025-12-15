@@ -1,10 +1,16 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import apiClient from '../lib/api';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import apiClient from "../lib/api";
 
 export interface User {
   id: number;
   email: string;
-  role: 'User' | 'Admin';
+  role: "User" | "Admin";
 }
 
 interface AuthContextType {
@@ -27,7 +33,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Restore session from localStorage on mount
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
+    const storedToken = localStorage.getItem("token");
     if (storedToken) {
       setToken(storedToken);
       // Optionally verify token by making a request
@@ -36,27 +42,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const response = await apiClient.post('/auth/login', { email, password });
+    const response = await apiClient.post("/auth/login", { email, password });
     const { token, user } = response.data;
-    
+
     setToken(token);
     setUser(user);
-    localStorage.setItem('token', token);
+    localStorage.setItem("token", token);
   };
 
   const register = async (email: string, password: string) => {
-    const response = await apiClient.post('/auth/register', { email, password });
+    const response = await apiClient.post("/auth/register", {
+      email,
+      password,
+    });
     const { token, user } = response.data;
-    
+
     setToken(token);
     setUser(user);
-    localStorage.setItem('token', token);
+    localStorage.setItem("token", token);
   };
 
   const logout = () => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
   };
 
   return (
@@ -65,7 +74,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         user,
         token,
         isAuthenticated: !!token,
-        isAdmin: user?.role === 'Admin' || false,
+        isAdmin: user?.role === "Admin" || false,
         login,
         register,
         logout,
@@ -80,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
+    throw new Error("useAuth must be used within AuthProvider");
   }
   return context;
 }
