@@ -57,6 +57,7 @@ npm run test:watch
 ```
 
 All 32 frontend tests passing:
+
 - **7 tests** - API client (axios configuration & interceptors)
 - **7 tests** - AuthContext (login, register, logout, admin role)
 - **5 tests** - ProtectedRoute (access control & redirects)
@@ -142,6 +143,7 @@ npm test -- src/pages/__tests__/LoginPage.test.tsx
 - **vi (Vitest mocking)** - Mock modules and functions
 
 All tests follow best practices:
+
 - Tests focus on **user behavior** not implementation details
 - Proper **async/await** handling with waitFor
 - Mock external dependencies (API calls, routing)

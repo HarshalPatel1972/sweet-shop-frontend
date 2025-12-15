@@ -1,25 +1,25 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { ProtectedRoute } from '../ProtectedRoute';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { ProtectedRoute } from "../ProtectedRoute";
 
 // Mock the useAuth hook
-vi.mock('../../contexts/AuthContext', async () => {
-  const actual = await vi.importActual('../../contexts/AuthContext');
+vi.mock("../../contexts/AuthContext", async () => {
+  const actual = await vi.importActual("../../contexts/AuthContext");
   return {
     ...actual,
     useAuth: vi.fn(),
   };
 });
 
-import { useAuth } from '../../contexts/AuthContext';
+import { useAuth } from "../../contexts/AuthContext";
 
-describe('ProtectedRoute', () => {
+describe("ProtectedRoute", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('renders loading state while loading', () => {
+  it("renders loading state while loading", () => {
     (useAuth as any).mockReturnValue({
       isAuthenticated: false,
       isAdmin: false,
@@ -34,10 +34,10 @@ describe('ProtectedRoute', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it('renders children when authenticated', () => {
+  it("renders children when authenticated", () => {
     (useAuth as any).mockReturnValue({
       isAuthenticated: true,
       isAdmin: false,
@@ -52,10 +52,10 @@ describe('ProtectedRoute', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('Protected Content')).toBeInTheDocument();
+    expect(screen.getByText("Protected Content")).toBeInTheDocument();
   });
 
-  it('redirects to login when not authenticated', () => {
+  it("redirects to login when not authenticated", () => {
     (useAuth as any).mockReturnValue({
       isAuthenticated: false,
       isAdmin: false,
@@ -71,10 +71,10 @@ describe('ProtectedRoute', () => {
     );
 
     // Navigate component redirects, so content shouldn't be visible
-    expect(screen.queryByText('Protected Content')).not.toBeInTheDocument();
+    expect(screen.queryByText("Protected Content")).not.toBeInTheDocument();
   });
 
-  it('allows admin to access admin routes', () => {
+  it("allows admin to access admin routes", () => {
     (useAuth as any).mockReturnValue({
       isAuthenticated: true,
       isAdmin: true,
@@ -89,10 +89,10 @@ describe('ProtectedRoute', () => {
       </BrowserRouter>
     );
 
-    expect(screen.getByText('Admin Content')).toBeInTheDocument();
+    expect(screen.getByText("Admin Content")).toBeInTheDocument();
   });
 
-  it('redirects non-admin users from admin routes', () => {
+  it("redirects non-admin users from admin routes", () => {
     (useAuth as any).mockReturnValue({
       isAuthenticated: true,
       isAdmin: false,
@@ -108,6 +108,6 @@ describe('ProtectedRoute', () => {
     );
 
     // Non-admin should be redirected
-    expect(screen.queryByText('Admin Content')).not.toBeInTheDocument();
+    expect(screen.queryByText("Admin Content")).not.toBeInTheDocument();
   });
 });
